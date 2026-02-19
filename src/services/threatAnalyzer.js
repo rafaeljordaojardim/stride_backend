@@ -53,22 +53,22 @@ Responda APENAS com o JSON, sem texto adicional.`;
 
   async analyzeThreats(systemName, architecture) {
     console.log('🔒 Starting STRIDE threat analysis...');
-    
+
     const allThreats = [];
-    
+
     for (const [key, category] of Object.entries(STRIDE_CATEGORIES)) {
       console.log(`  Analyzing: ${category}`);
-      
+
       const prompt = this.createThreatPrompt(systemName, architecture, category);
       const response = await this.client.generateText(prompt, 4096);
-      
+
       // Extract JSON from response
       let jsonStr = response;
       const jsonMatch = response.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         jsonStr = jsonMatch[0];
       }
-      
+
       try {
         const result = JSON.parse(jsonStr);
         
@@ -90,7 +90,7 @@ Responda APENAS com o JSON, sem texto adicional.`;
     }
     
     console.log(`✅ Total threats identified: ${allThreats.length}`);
-    
+
     return {
       system_name: systemName,
       architecture: architecture,
